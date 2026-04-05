@@ -27,7 +27,7 @@ export default function Users() {
         </div>
 
         <div className="w-full md:flex">
-          <UserList usuarios={usuarios} />
+          <UserList usuarios={usuarios} setUsuarios={setUsuarios} />
         </div>
 
       </div>
