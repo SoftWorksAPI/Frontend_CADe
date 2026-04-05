@@ -1,27 +1,41 @@
 "use client";
 
-import { useState, FormEvent, Dispatch, SetStateAction } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { User } from "../users/page";
 
 type Props = {
-  setUsuarios: Dispatch<SetStateAction<User[]>>;
+  setUsuarios: React.Dispatch<React.SetStateAction<User[]>>;
+  editingUser: User | null;
+  setEditingUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
-export default function UserForm({ setUsuarios }: Props) {
+export default function UserForm({
+  setUsuarios,
+  editingUser,
+  setEditingUser,
+}: Props) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
 
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+
+  // preencher ao editar
+  useEffect(() => {
+    if (editingUser) {
+      setNome(editingUser.nome);
+      setEmail(editingUser.email);
+      setSenha(editingUser.senha);
+    }
+  }, [editingUser]);
+
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setErro("");
     setSucesso("");
-
-    const formData = new FormData(e.currentTarget);
-    const nome = formData.get("nome") as string;
-    const email = formData.get("email") as string;
-    const senha = formData.get("senha") as string;
 
     if (!nome || !email || !senha) {
       setErro("Preencha todos os campos");
@@ -36,20 +50,37 @@ export default function UserForm({ setUsuarios }: Props) {
     setLoading(true);
 
     setTimeout(() => {
-      const novoUsuario: User = {
-        id: Date.now(),
-        nome,
-        email,
-        senha,
-      };
+      if (editingUser) {
+        // UPDATE
+        setUsuarios((prev) =>
+          prev.map((user) =>
+            user.id === editingUser.id
+              ? { ...user, nome, email, senha }
+              : user
+          )
+        );
 
-      setUsuarios((prev) => [...prev, novoUsuario]);
+        setSucesso("Usuário atualizado com sucesso");
+        setEditingUser(null);
+      } else {
+        // CREATE
+        const novoUsuario: User = {
+          id: Date.now(),
+          nome,
+          email,
+          senha,
+        };
 
-      setSucesso("Usuário criado com sucesso");
+        setUsuarios((prev) => [...prev, novoUsuario]);
+        setSucesso("Usuário criado com sucesso");
+      }
+
       setLoading(false);
 
-      (e.target as HTMLFormElement).reset();
-    }, 400);
+      setNome("");
+      setEmail("");
+      setSenha("");
+    }, 800);
   }
 
   return (
@@ -57,7 +88,7 @@ export default function UserForm({ setUsuarios }: Props) {
 
       <div className="text-center mb-6">
         <h1 className="text-xl font-bold text-slate-800">
-          Cadastro de Usuário
+          {editingUser ? "Editar Usuário" : "Cadastrar Usuário"}
         </h1>
       </div>
 
@@ -69,11 +100,11 @@ export default function UserForm({ setUsuarios }: Props) {
           </label>
 
           <input
-            name="nome"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
             type="text"
             placeholder="Digite o nome"
-            className="w-full px-3 py-2 text-sm text-slate-700 border border-slate-300 rounded-md 
-            focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition"
+            className="w-full px-3 py-2 border border-slate-300 rounded-md"
           />
         </div>
 
@@ -83,11 +114,11 @@ export default function UserForm({ setUsuarios }: Props) {
           </label>
 
           <input
-            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="Digite o email"
-            className="w-full px-3 py-2 text-sm text-slate-700 border border-slate-300 rounded-md 
-            focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition"
+            className="w-full px-3 py-2 border border-slate-300  rounded-md"
           />
         </div>
 
@@ -98,42 +129,36 @@ export default function UserForm({ setUsuarios }: Props) {
 
           <div className="relative">
             <input
-              name="senha"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
               type={showPassword ? "text" : "password"}
               placeholder="Digite a senha"
-              className="w-full px-3 py-2 text-sm text-slate-700 border border-slate-300 rounded-md 
-              focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition"
+              className="w-full px-3 py-2 border border-slate-300 rounded-md"
             />
 
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-2 text-xs text-slate-500 hover:text-black"
+              className="absolute right-3 top-2 text-xs"
             >
               {showPassword ? "Ocultar" : "Mostrar"}
             </button>
           </div>
         </div>
 
-        {erro && (
-          <p className="text-red-600 text-sm text-center">
-            {erro}
-          </p>
-        )}
-
-        {sucesso && (
-          <p className="text-green-700 text-sm text-center">
-            {sucesso}
-          </p>
-        )}
+        {erro && <p className="text-red-600 text-sm text-center">{erro}</p>}
+        {sucesso && <p className="text-green-700 text-sm text-center">{sucesso}</p>}
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2 bg-blue-600 text-white rounded-md 
-          hover:bg-blue-700 transition font-medium disabled:opacity-60"
+          className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
         >
-          {loading ? "Criando..." : "Criar Usuário"}
+          {loading
+            ? "Processando..."
+            : editingUser
+            ? "Editar Usuário"
+            : "Criar Usuário"}
         </button>
 
       </form>
