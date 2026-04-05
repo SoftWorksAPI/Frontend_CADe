@@ -1,0 +1,80 @@
+header {
+  background-color: var(--colorBG);
+  display: flex;
+  align-items: center;
+ justify-content: space-between;
+  padding: 20px 25px;
+  border-bottom: var(--yellowAccent) 2px solid;
+  z-index: 1;
+  position: sticky; top: 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  
+}
+
+.logo h1 {
+  font-size: 2.2em;
+  color: var(--black);
+  margin-left: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: var(--black);
+}
+
+header img {
+  /* width: 50px; */
+  height: auto;
+}
+
+.pages-item {
+  font-size: 1.30em;
+}
+
+nav ul {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+nav ul li {
+  display: flex;
+  gap: 5px;
+  text-decoration: none;
+  color: var(--black);
+}
+
+nav ul a {
+  text-decoration: none;
+  color: var(--black);
+}
+
+nav ul li h1 {
+  font-size: 1.35em;
+}
+
+.user-item a{
+  display: flex;
+  align-items: center;
+}
+
+#sign-up-button {
+  background-color: var(--orangeAccent);
+  padding: 7px 17px;
+  border-radius: 35px;
+}
+#sign-up {
+  color: var(--colorBG);
+}
+
+#login-button {
+  border: 1px solid var(--yellowAccent);
+  padding: 7px 17px;
+  border-radius: 350px;
+
+}
+

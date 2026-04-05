@@ -1,0 +1,129 @@
+.upload-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 300px);
+  padding: 2rem;
+}
+
+.upload-container {
+  border: 2px solid var(--yellowAccent);
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 0px 50px 20px var(--yellowAccent);
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.upload-container h2 {
+  font-size: 2em;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  color: var(--orangeAccent);
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.file-input-wrapper {
+  border: 2px dashed var(--yellowAccent);
+  border-radius: 8px;
+  padding: 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: rgba(255, 193, 7, 0.05);
+}
+
+.file-input-wrapper:hover {
+  background-color: rgba(255, 193, 7, 0.1);
+  border-color: var(--orangeAccent);
+}
+
+.file-input-label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-input-text {
+  font-size: 1.1em;
+  color: var(--orangeAccent);
+  font-weight: 600;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+.upload-button {
+  background-color: var(--orangeAccent);
+  color: var(--colorBG);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 35px;
+  font-weight: 600;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.upload-button:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+.upload-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.upload-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1em;
+}
+
+.upload-message.success {
+  background-color: rgba(76, 175, 80, 0.2);
+  color: #4CAF50;
+  border: 1px solid #4CAF50;
+}
+
+.upload-message.error {
+  background-color: rgba(244, 67, 54, 0.2);
+  color: #F44336;
+  border: 1px solid #F44336;
+}
+
+@media (max-width: 768px) {
+  .upload-container {
+    padding: 1.5rem;
+  }
+
+  .upload-container h2 {
+    font-size: 1.5em;
+  }
+
+  .file-input-wrapper {
+    padding: 1.5rem;
+  }
+
+  .file-input-text {
+    font-size: 0.95em;
+  }
+
+  .upload-button {
+    font-size: 1em;
+  }
+}

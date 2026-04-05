@@ -1,0 +1,375 @@
+.admin-page {
+  min-height: calc(100vh - 200px);
+  padding: 2rem;
+}
+
+.admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  border: 2px solid var(--yellowAccent);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0px 50px 20px var(--yellowAccent);
+}
+
+.admin-container h1 {
+  font-size: 2.5em;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.admin-subtitle {
+  font-size: 1em;
+  color: var(--orangeAccent);
+  margin-bottom: 2rem;
+}
+
+.users-table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent;
+}
+
+.users-table thead {
+  background-color: rgba(255, 193, 7, 0.1);
+  border-bottom: 2px solid var(--yellowAccent);
+}
+
+.users-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--orangeAccent);
+}
+
+.users-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 193, 7, 0.3);
+  word-break: break-word;
+}
+
+.users-table tbody tr:hover {
+  background-color: rgba(255, 193, 7, 0.05);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.pagination-btn {
+  border: 2px solid var(--orangeAccent);
+  background-color: transparent;
+  color: var(--orangeAccent);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: var(--orangeAccent);
+  color: var(--colorBG);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  font-weight: 600;
+  min-width: 150px;
+  text-align: center;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.btn {
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 35px;
+  font-weight: 600;
+  font-size: 1em;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--orangeAccent);
+  color: var(--colorBG);
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn-logout {
+  background-color: transparent;
+  color: var(--orangeAccent);
+  border: 2px solid var(--orangeAccent);
+}
+
+.btn-logout:hover {
+  background-color: var(--orangeAccent);
+  color: var(--colorBG);
+}
+
+@media (max-width: 768px) {
+  .admin-container {
+    padding: 1rem;
+  }
+
+  .admin-container h1 {
+    font-size: 1.8em;
+  }
+
+  .users-table th,
+  .users-table td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.9em;
+  }
+
+  .pagination {
+    gap: 0.5rem;
+  }
+
+  .pagination-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9em;
+  }
+
+  .actions-cell {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .action-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85em;
+  }
+}
+
+/* Estilos para Ações da Tabela */
+.actions-cell {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9em;
+  transition: all 0.3s ease;
+}
+
+.edit-btn {
+  background-color: var(--orangeAccent);
+  color: var(--colorBG);
+}
+
+.edit-btn:hover {
+  opacity: 0.8;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.delete-btn:hover {
+  opacity: 0.8;
+}
+
+/* Estilos para Modais */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: var(--colorBG);
+  border: 2px solid var(--yellowAccent);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 0px 50px 20px var(--yellowAccent);
+}
+
+.modal h2 {
+  font-size: 1.5em;
+  margin-bottom: 1.5rem;
+  color: var(--orangeAccent);
+  text-align: center;
+}
+
+.modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal input {
+  padding: 0.75rem;
+  border: 1px solid var(--yellowAccent);
+  border-radius: 8px;
+  font-size: 1em;
+}
+
+.modal input:focus {
+  outline: none;
+  border-color: var(--orangeAccent);
+  box-shadow: 0 0 10px rgba(255, 152, 0, 0.3);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.checkbox-label:hover {
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn-modal-submit {
+  flex: 1;
+  background-color: var(--orangeAccent);
+  color: var(--colorBG);
+  border: none;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.btn-modal-submit:hover {
+  opacity: 0.8;
+}
+
+.btn-modal-cancel {
+  flex: 1;
+  background-color: transparent;
+  border: 2px solid var(--orangeAccent);
+  color: var(--orangeAccent);
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-modal-cancel:hover {
+  background-color: var(--orangeAccent);
+  color: var(--colorBG);
+}
+
+.dropdown-menu {
+    margin-top: 15px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.dropdown-menu label {
+    font-weight: 600;
+    color: var(--black);
+}
+
+.dropdown-menu select {
+    padding: 8px;
+    border: 1px solid var(--yellowAccent);
+    border-radius: 5px;
+    background-color: var(--colorBG);
+    font-family: 'Open Sans', sans-serif;
+}
+
+.dropdown-menu button {
+    background-color: var(--orangeAccent);
+    color: var(--colorBG);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.dropdown-menu button:hover {
+    background-color: var(--blueAccent);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0,0,0,0.5);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.modal {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    min-width: 300px;
+}

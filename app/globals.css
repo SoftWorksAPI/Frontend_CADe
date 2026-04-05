@@ -1,26 +1,46 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
   }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
 }
+  
+:root {
+  --colorBG: #fff8f0; /* Branco */
+  --yellowAccent: #e9d6c4; /* Amarelo */
+  --orangeAccent: #f8820c; /* Laranja */
+  --blueAccent: #2176ff; /* Azul */
+  --purpleAccent: #392f5a; /* Roxo? Azul Escuro? */
+  --black: #000000; /* Preto */
+  }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Open Sans', sans-serif;
+  background-color: var(--colorBG);
 }
+
+main {
+  display: flex;
+    flex-direction: column;
+  flex: 1;
+}
+
+.main {
+  min-height: 95vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+h1 {
+  font-weight: 700;
+}
+

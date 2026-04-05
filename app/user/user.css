@@ -1,0 +1,86 @@
+.user-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px);
+  padding: 2rem;
+}
+
+.user-container {
+  border: 2px solid var(--yellowAccent);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0px 50px 20px var(--yellowAccent);
+  width: 100%;
+  max-width: 600px;
+}
+
+.user-container h1 {
+  font-size: 2.5em;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.user-info {
+  margin-bottom: 2rem;
+}
+
+.info-group {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--yellowAccent);
+}
+
+.info-group label {
+  display: block;
+  font-weight: 600;
+  font-size: 1.1em;
+  color: var(--orangeAccent);
+  margin-bottom: 0.5rem;
+}
+
+.info-group p {
+  font-size: 1em;
+  word-break: break-word;
+  margin: 0;
+}
+
+.user-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.btn {
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 35px;
+  font-weight: 600;
+  font-size: 1em;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--orangeAccent);
+  color: var(--colorBG);
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn-logout {
+  background-color: transparent;
+  color: var(--orangeAccent);
+  border: 2px solid var(--orangeAccent);
+}
+
+.btn-logout:hover {
+  background-color: var(--orangeAccent);
+  color: var(--colorBG);
+}
