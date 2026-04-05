@@ -1,15 +1,13 @@
 "use client";
-import { useState, FormEvent } from "react";
 
-type User = {
-  id: number;
-  nome: string;
-  email: string;
-  senha: string;
+import { useState, FormEvent, Dispatch, SetStateAction } from "react";
+import { User } from "../users/page";
+
+type Props = {
+  setUsuarios: Dispatch<SetStateAction<User[]>>;
 };
 
-export default function UserForm() {
-  const [usuarios, setUsuarios] = useState<User[]>([]);
+export default function UserForm({ setUsuarios }: Props) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState("");
@@ -57,17 +55,14 @@ export default function UserForm() {
   return (
     <div className="w-full max-w-sm bg-white rounded-xl shadow-md border border-slate-200 p-6">
 
-      {/* HEADER */}
       <div className="text-center mb-6">
         <h1 className="text-xl font-bold text-slate-800">
           Cadastro de Usuário
         </h1>
       </div>
 
-      {/* FORM */}
       <form onSubmit={handleSubmit} className="space-y-5">
 
-        {/* NOME */}
         <div>
           <label className="text-sm font-medium text-slate-700 block mb-1">
             Nome
@@ -82,7 +77,6 @@ export default function UserForm() {
           />
         </div>
 
-        {/* EMAIL */}
         <div>
           <label className="text-sm font-medium text-slate-700 block mb-1">
             Email
@@ -97,7 +91,6 @@ export default function UserForm() {
           />
         </div>
 
-        {/* SENHA */}
         <div>
           <label className="text-sm font-medium text-slate-700 block mb-1">
             Senha
@@ -122,21 +115,18 @@ export default function UserForm() {
           </div>
         </div>
 
-        {/* ERRO */}
         {erro && (
           <p className="text-red-600 text-sm text-center">
             {erro}
           </p>
         )}
 
-        {/* SUCESSO */}
         {sucesso && (
           <p className="text-green-700 text-sm text-center">
             {sucesso}
           </p>
         )}
 
-        {/* BUTTON */}
         <button
           type="submit"
           disabled={loading}
