@@ -5,12 +5,22 @@ import './upload.css';
 
 export default function UploadPage() {
   const [file, setFile] = useState(null);
+  const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState(''); // 'success' ou 'error'
 
   function handleFileChange(e) {
     const selectedFile = e.target.files?.[0];
+    
+    if (selectedFile && !selectedFile.name.toLowerCase().endsWith('.dxf')) {
+      setMessage('Apenas arquivos .dxf são permitidos');
+      setMessageType('error');
+      setFile(null);
+      e.target.value = '';
+      return;
+    }
+
     setFile(selectedFile || null);
     setMessage('');
   }
@@ -24,6 +34,12 @@ export default function UploadPage() {
       return;
     }
 
+    if (!file.name.toLowerCase().endsWith('.dxf')) {
+      setMessage('Apenas arquivos .dxf são permitidos');
+      setMessageType('error');
+      return;
+    }
+
     setLoading(true);
     setMessage('');
 
@@ -33,8 +49,11 @@ export default function UploadPage() {
       
       const formData = new FormData();
       formData.append('file', file);
+      if (description.trim()) {
+        formData.append('description', description);
+      }
 
-      const response = await fetch(`${apiUrl}/upload`, {
+      const response = await fetch(`${apiUrl}/files/upload`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -51,6 +70,7 @@ export default function UploadPage() {
       setMessage('Arquivo enviado com sucesso!');
       setMessageType('success');
       setFile(null);
+      setDescription('');
       
       // Reseta o input
       const input = document.getElementById('fileInput');
@@ -92,6 +112,21 @@ export default function UploadPage() {
                 <p><strong>Tamanho:</strong> {(file.size / 1024 / 1024).toFixed(2)} MB</p>
               </div>
             )}
+
+            <div className='description-wrapper'>
+              <label htmlFor='description' className='description-label'>
+                Descrição (opcional):
+              </label>
+              <textarea
+                id='description'
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                disabled={loading}
+                placeholder='Adicione uma descrição para este arquivo...'
+                className='description-input'
+                rows='4'
+              />
+            </div>
 
             <button 
               type='submit' 

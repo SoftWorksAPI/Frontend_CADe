@@ -89,6 +89,41 @@
   color: var(--orangeAccent);
 }
 
+.description-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.description-label {
+  font-weight: 600;
+  color: var(--orangeAccent);
+  font-size: 0.95em;
+}
+
+.description-input {
+  padding: 0.75rem;
+  border: 1px solid var(--yellowAccent);
+  border-radius: 8px;
+  background-color: rgba(255, 193, 7, 0.05);
+  color: var(--text);
+  font-family: 'Open Sans', sans-serif;
+  resize: vertical;
+  transition: all 0.3s ease;
+}
+
+.description-input:focus {
+  outline: none;
+  border-color: var(--orangeAccent);
+  background-color: rgba(255, 193, 7, 0.1);
+  box-shadow: 0 0 10px rgba(255, 152, 0, 0.3);
+}
+
+.description-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .upload-button {
   background-color: var(--orangeAccent);
   color: var(--colorBG);

@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Modal from '@/app/components/Modal/page';
+import { useModal } from '@/app/hooks/useModal';
 import './admin.css';
 
 export default function AdminPage() {
@@ -19,6 +21,17 @@ export default function AdminPage() {
   const [editingUser, setEditingUser] = useState(null);
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [editFormData, setEditFormData] = useState({ name: '', isAdmin: false });
+  
+  // Modais customizados
+  const messageModal = useModal();
+  const confirmModal = useModal();
+  const filesModal = useModal();
+  const [modalMessage, setModalMessage] = useState({ title: '', content: '', type: 'success' });
+  const [pendingDeleteUserId, setPendingDeleteUserId] = useState(null);
+  const [filesData, setFilesData] = useState([]);
+  const [filesUserName, setFilesUserName] = useState('');
+  const [filesLoading, setFilesLoading] = useState(false);
+  
   const router = useRouter();
 
   useEffect(() => {
@@ -116,6 +129,76 @@ export default function AdminPage() {
     if (page < totalPages) setPage(page + 1);
   }
 
+  async function viewAllFiles() {
+    try {
+      setFilesLoading(true);
+      const token = localStorage.getItem('token');
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      
+      const response = await fetch(`${apiUrl}/files?page=1&limit=100`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Erro ao carregar arquivos');
+      }
+
+      const data = await response.json();
+      setFilesData(data.files || []);
+      setFilesUserName('Todos os Arquivos');
+      filesModal.open();
+    } catch (err) {
+      setModalMessage({
+        title: 'Erro',
+        content: err.message,
+        type: 'error'
+      });
+      messageModal.open();
+    } finally {
+      setFilesLoading(false);
+    }
+  }
+
+  async function viewUserFiles(userId, userName) {
+    try {
+      setFilesLoading(true);
+      const token = localStorage.getItem('token');
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      
+      const response = await fetch(`${apiUrl}/files/user/${userId}?page=1&limit=100`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Erro ao carregar arquivos do usuário');
+      }
+
+      const data = await response.json();
+      setFilesData(data.files || []);
+      setFilesUserName(`Arquivos de ${userName}`);
+      filesModal.open();
+    } catch (err) {
+      setModalMessage({
+        title: 'Erro',
+        content: err.message,
+        type: 'error'
+      });
+      messageModal.open();
+    } finally {
+      setFilesLoading(false);
+    }
+  }
+
   async function handleRegisterUser(e) {
     e.preventDefault();
     try {
@@ -139,9 +222,19 @@ export default function AdminPage() {
       setFormData({ name: '', email: '', password: '' });
       setShowRegisterModal(false);
       fetchUsers();
-      alert('Usuário registrado com sucesso!');
+      setModalMessage({
+        title: 'Sucesso!',
+        content: 'Usuário registrado com sucesso!',
+        type: 'success'
+      });
+      messageModal.open();
     } catch (err) {
-      alert('Erro: ' + err.message);
+      setModalMessage({
+        title: 'Erro',
+        content: err.message,
+        type: 'error'
+      });
+      messageModal.open();
     }
   }
 
@@ -168,22 +261,30 @@ export default function AdminPage() {
       setEditingUser(null);
       setShowEditModal(false);
       fetchUsers();
-      alert('Usuário atualizado com sucesso!');
+      setModalMessage({
+        title: 'Sucesso!',
+        content: 'Usuário atualizado com sucesso!',
+        type: 'success'
+      });
+      messageModal.open();
     } catch (err) {
-      alert('Erro: ' + err.message);
+      setModalMessage({
+        title: 'Erro',
+        content: err.message,
+        type: 'error'
+      });
+      messageModal.open();
     }
   }
 
-  async function handleDeleteUser(userId) {
-    if (!confirm('Tem certeza que deseja deletar este usuário?')) {
-      return;
-    }
+  async function confirmDelete() {
+    if (!pendingDeleteUserId) return;
 
     try {
       const token = localStorage.getItem('token');
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
       
-      const response = await fetch(`${apiUrl}/users/delete/${userId}`, {
+      const response = await fetch(`${apiUrl}/users/delete/${pendingDeleteUserId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -196,11 +297,29 @@ export default function AdminPage() {
         throw new Error(data.message || 'Erro ao deletar usuário');
       }
 
+      setPendingDeleteUserId(null);
+      confirmModal.close();
       fetchUsers();
-      alert('Usuário deletado com sucesso!');
+      setModalMessage({
+        title: 'Sucesso!',
+        content: 'Usuário deletado com sucesso!',
+        type: 'success'
+      });
+      messageModal.open();
     } catch (err) {
-      alert('Erro: ' + err.message);
+      confirmModal.close();
+      setModalMessage({
+        title: 'Erro',
+        content: err.message,
+        type: 'error'
+      });
+      messageModal.open();
     }
+  }
+
+  function handleDeleteUser(userId) {
+    setPendingDeleteUserId(userId);
+    confirmModal.open();
   }
 
   function openEditModal(user) {
@@ -259,6 +378,12 @@ export default function AdminPage() {
                         >
                           Deletar
                         </button>
+                        <button 
+                          className="action-btn files-btn"
+                          onClick={() => viewUserFiles(user.id, user.name)}
+                        >
+                          📁 Arquivos
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -294,6 +419,12 @@ export default function AdminPage() {
             onClick={() => setShowRegisterModal(true)}
           >
             + Novo Usuário
+          </button>
+          <button 
+            className="btn btn-primary"
+            onClick={viewAllFiles}
+          >
+            📁 Todos os Arquivos
           </button>
           <Link href="/user" className="btn btn-primary">Meu Perfil</Link>
           <button onClick={handleLogout} className="btn btn-logout">Sair</button>
@@ -377,6 +508,102 @@ export default function AdminPage() {
           </div>
         )}
       </section>
+
+      {/* Modal de Arquivos */}
+      <Modal
+        isOpen={filesModal.isOpen}
+        onClose={filesModal.close}
+        title={filesUserName}
+        size="large"
+        footer={
+          <button 
+            className="btn-primary"
+            onClick={filesModal.close}
+          >
+            Fechar
+          </button>
+        }
+      >
+        {filesLoading ? (
+          <p>Carregando arquivos...</p>
+        ) : filesData.length === 0 ? (
+          <p>Nenhum arquivo encontrado.</p>
+        ) : (
+          <div className="users-table-wrapper">
+            <table className="users-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nome do Arquivo</th>
+                  <th>Usuário</th>
+                  <th>Tamanho</th>
+                  <th>Enviado em</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filesData.map((file) => (
+                  <tr key={file.id}>
+                    <td>{file.id}</td>
+                    <td>{file.originalName}</td>
+                    <td>{file.User?.name || 'Usuário não encontrado'}</td>
+                    <td>{(file.fileSize / 1024).toFixed(2)} KB</td>
+                    <td>{new Date(file.createdAt).toLocaleDateString('pt-BR')}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Modal>
+
+      {/* Modal de Mensagem (Sucesso/Erro) */}
+      <Modal
+        isOpen={messageModal.isOpen}
+        onClose={messageModal.close}
+        title={modalMessage.title}
+        size="small"
+        footer={
+          <button 
+            className="btn-primary"
+            onClick={messageModal.close}
+          >
+            OK
+          </button>
+        }
+      >
+        <p style={{ color: modalMessage.type === 'error' ? '#f44336' : '#4CAF50' }}>
+          {modalMessage.content}
+        </p>
+      </Modal>
+
+      {/* Modal de Confirmação de Deletar */}
+      <Modal
+        isOpen={confirmModal.isOpen}
+        onClose={confirmModal.close}
+        title="Confirmar Exclusão"
+        size="small"
+        footer={
+          <>
+            <button 
+              className="btn-secondary"
+              onClick={confirmModal.close}
+            >
+              Cancelar
+            </button>
+            <button 
+              className="btn-danger"
+              onClick={confirmDelete}
+            >
+              Deletar
+            </button>
+          </>
+        }
+      >
+        <p>Tem certeza que deseja deletar este usuário?</p>
+        <p style={{ fontSize: '0.9em', color: '#999', marginTop: '1rem' }}>
+          Esta ação não pode ser desfeita.
+        </p>
+      </Modal>
     </main>
   );
 }

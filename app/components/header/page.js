@@ -99,7 +99,7 @@ export default function Header () {
                         <li className="pages-item"> <Link href="/chat"> <h1>Chat</h1> </Link></li>
                     )}
                     {!loading && isAuthenticated && (
-                        <li className="pages-item"> <Link href="/upload"> <h1>Upload</h1> </Link></li>
+                        <li className="pages-item"> <Link href="/files"> <h1>Arquivos</h1> </Link></li>
                     )}
                     {!loading && isAuthenticated && (
                         <li className="pages-item"> <Link href="/user"> <h1>Perfil</h1> </Link></li>
