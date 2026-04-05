@@ -1,5 +1,4 @@
 import "./globals.css";
-import Footer from "./components/footer/page";
 import Header from "./components/header/page";
 import LayoutWrapper from "./components/LayoutWrapper/page";
 
@@ -15,7 +14,6 @@ export default function RootLayout({ children }) {
         <LayoutWrapper>
           <Header />
           {children}
-          <Footer />
         </LayoutWrapper>
       </body>
     </html>

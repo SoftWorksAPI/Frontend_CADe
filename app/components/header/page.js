@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 import "../../globals.css";
 import "./header.css";
 import Link from "next/link";
-import Image from "next/image";
 
 export default function Header () {
     const pathname = usePathname();
@@ -84,12 +83,6 @@ export default function Header () {
 
     return (
         <header className="header">
-            <Link href="/" >
-                <div className="logo">
-                    <Image src="/icon.svg" alt="Logo" width={50} height={50} />
-                    <h1>CADê</h1>
-                </div>
-            </Link>
             <nav className="pages-menu">
                 <ul className="pages-list">
                     {!loading && isAdmin && (
