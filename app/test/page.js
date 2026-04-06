@@ -13,6 +13,8 @@ export default function FilesTestPage() {
   const [userId, setUserId] = useState('');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
+  const [markdownFileId, setMarkdownFileId] = useState('');
+  const [markdownContent, setMarkdownContent] = useState('');
 
   const messageModal = useModal();
   const fileDetailModal = useModal();
@@ -156,6 +158,56 @@ export default function FilesTestPage() {
     }
   }
 
+  // Enviar markdown para um arquivo
+  async function handleAddMarkdown(e) {
+    e.preventDefault();
+    
+    if (!markdownFileId.trim()) {
+      setModalMessage('❌ ID do arquivo é obrigatório');
+      messageModal.open();
+      return;
+    }
+
+    if (!markdownContent.trim()) {
+      setModalMessage('❌ Conteúdo do markdown é obrigatório');
+      messageModal.open();
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${apiUrl}/files/${markdownFileId}/markdown`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ markdownContent }),
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) throw new Error(data.message || 'Erro ao adicionar markdown');
+
+      setModalMessage(
+        `✅ Markdown adicionado com sucesso!\n\n` +
+        `Arquivo ID: ${data.file.id}\n` +
+        `Nome: ${data.file.originalName}\n` +
+        `Atualizado em: ${new Date(data.file.updatedAt).toLocaleDateString('pt-BR')}`
+      );
+      messageModal.open();
+      
+      setMarkdownFileId('');
+      setMarkdownContent('');
+    } catch (err) {
+      setModalMessage(`❌ Erro: ${err.message}`);
+      messageModal.open();
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <main className="test-page-main">
       <div className="test-container">
@@ -283,6 +335,34 @@ export default function FilesTestPage() {
               ))}
             </div>
           )}
+        </section>
+
+        {/* Seção de Teste - Adicionar Markdown */}
+        <section className="test-section">
+          <h2>📝 Adicionar Markdown a um Arquivo</h2>
+          <form onSubmit={handleAddMarkdown} className="test-form">
+            <input
+              type="text"
+              placeholder="ID do arquivo"
+              value={markdownFileId}
+              onChange={(e) => setMarkdownFileId(e.target.value)}
+              required
+            />
+            <textarea
+              placeholder="Conteúdo markdown..."
+              value={markdownContent}
+              onChange={(e) => setMarkdownContent(e.target.value)}
+              rows="6"
+              required
+            />
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="test-btn primary"
+            >
+              {loading ? 'Adicionando...' : 'Adicionar Markdown'}
+            </button>
+          </form>
         </section>
       </div>
 

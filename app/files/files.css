@@ -423,6 +423,19 @@
   white-space: pre-wrap;
 }
 
+.detail-group .markdown-content {
+  background-color: rgba(255, 193, 7, 0.05);
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 3px solid #27ae60;
+  white-space: pre-wrap;
+  max-height: 300px;
+  overflow-y: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
 .detail-actions {
   padding: 1.5rem;
   border-top: 2px solid var(--yellowAccent);

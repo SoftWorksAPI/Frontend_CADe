@@ -157,6 +157,58 @@ export default function FilesPage() {
     }
   }
 
+  async function handleSendToProcessing(fileId) {
+    try {
+      const token = localStorage.getItem('token');
+      
+      // Buscar informações do arquivo
+      const response = await fetch(`${apiUrl}/files/${fileId}`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+
+      const fileData = await response.json();
+      if (!response.ok) throw new Error(fileData.message);
+
+      setModalMessage(`⏳ Processando arquivo "${fileData.originalName}"...`);
+      messageModal.open();
+
+      // Buscar o arquivo usando o filePath armazenado
+      const fileResponse = await fetch(`${apiUrl}${fileData.filePath}`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+
+      if (!fileResponse.ok) throw new Error('Erro ao baixar arquivo');
+
+      const fileBlob = await fileResponse.blob();
+
+      // Enviar para processamento no backend Python
+      const pythonApiUrl = process.env.NEXT_PUBLIC_PYTHON_API_URL || 'http://localhost:8080';
+      
+      const formData = new FormData();
+      formData.append('file', fileBlob, fileData.originalName);
+
+      const processingResponse = await fetch(`${pythonApiUrl}/v1/extract/dxf`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const processingData = await processingResponse.json();
+
+      if (!processingResponse.ok) {
+        throw new Error(processingData.detail || 'Erro ao processar arquivo');
+      }
+
+      // Exibir resultado do processamento
+      const resultMessage = `✅ Arquivo processado com sucesso!\n\n📊 Resultado:\n${JSON.stringify(processingData, null, 2)}`;
+
+      setModalMessage(resultMessage);
+      messageModal.open();
+    } catch (err) {
+      setModalMessage(`❌ Erro ao processar: ${err.message}`);
+      messageModal.open();
+    }
+  }
+
   function handlePreviousPage() {
     if (page > 1) setPage(page - 1);
   }
@@ -308,6 +360,14 @@ export default function FilesPage() {
                   <p className="description-text">{selectedFileDetail.description}</p>
                 </div>
               )}
+              {selectedFileDetail.markdownContent && (
+                <div className="detail-group">
+                  <label>Markdown:</label>
+                  <div className="markdown-content">
+                    {selectedFileDetail.markdownContent}
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="detail-actions">
@@ -319,6 +379,13 @@ export default function FilesPage() {
                 }}
               >
                 🗑️ Deletar Arquivo
+              </button>
+              <button 
+                className="action-btn"
+                onClick={() => handleSendToProcessing(selectedFileDetail.id)}
+                style={{ backgroundColor: '#27ae60' }}
+              >
+                ⚙️ Processar DXF
               </button>
             </div>
           </aside>
@@ -396,7 +463,22 @@ export default function FilesPage() {
           </button>
         }
       >
-        <p>{modalMessage}</p>
+        {modalMessage.includes('{') ? (
+          <pre style={{ 
+            backgroundColor: '#f5f5f5', 
+            padding: '12px', 
+            borderRadius: '4px',
+            maxHeight: '400px',
+            overflowY: 'auto',
+            fontSize: '12px',
+            whiteSpace: 'pre-wrap',
+            wordWrap: 'break-word'
+          }}>
+            {modalMessage}
+          </pre>
+        ) : (
+          <p>{modalMessage}</p>
+        )}
       </Modal>
       </div>
     </main>
