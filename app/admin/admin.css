@@ -373,3 +373,13 @@
     border-radius: 12px;
     min-width: 300px;
 }
+
+/* Estilos para o Botão de Arquivos */
+.files-btn {
+  background-color: #3498db;
+  color: white;
+}
+
+.files-btn:hover {
+  opacity: 0.8;
+}

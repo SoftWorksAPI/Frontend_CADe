@@ -1,0 +1,194 @@
+.markdown-renderer {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.8;
+  color: #24292e;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Títulos */
+.markdown-renderer h1,
+.markdown-renderer h2,
+.markdown-renderer h3,
+.markdown-renderer h4,
+.markdown-renderer h5,
+.markdown-renderer h6 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  border-bottom: 1px solid #eaecef;
+  padding-bottom: 8px;
+}
+
+.md-h1 {
+  font-size: 32px !important;
+  color: #2c3e50 !important;
+}
+
+.md-h2 {
+  font-size: 28px !important;
+  color: #34495e !important;
+}
+
+.md-h3 {
+  font-size: 24px !important;
+  color: #44546f !important;
+}
+
+.md-h4 {
+  font-size: 20px !important;
+  color: #555 !important;
+}
+
+/* Parágrafos */
+.md-p {
+  margin: 16px 0 !important;
+  font-size: 16px !important;
+  line-height: 1.8 !important;
+}
+
+/* Negrito e Itálico */
+.md-strong {
+  font-weight: 700 !important;
+  color: #2c3e50 !important;
+}
+
+.md-em {
+  font-style: italic !important;
+  color: #555 !important;
+}
+
+/* Links */
+.md-a {
+  color: #0078d4 !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid #0078d4 !important;
+  transition: color 0.2s !important;
+}
+
+.md-a:hover {
+  color: #005a9e !important;
+  text-decoration: underline !important;
+}
+
+/* Código */
+.md-code-inline {
+  background-color: #2d2d2d !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 4px 8px !important;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
+  font-size: 14px !important;
+  color: #f8f8f2 !important;
+  font-weight: 500 !important;
+}
+
+.md-pre {
+  background-color: #2d2d2d !important;
+  color: #f8f8f2 !important;
+  padding: 16px !important;
+  border-radius: 6px !important;
+  overflow-x: auto !important;
+  margin: 16px 0 !important;
+  line-height: 1.45 !important;
+}
+
+.md-code-block {
+  background-color: transparent !important;
+  border: none !important;
+  color: #f8f8f2 !important;
+  padding: 0 !important;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
+}
+
+/* Listas */
+.md-ul,
+.md-ol {
+  margin: 16px 0 !important;
+  padding-left: 32px !important;
+}
+
+.md-li {
+  margin: 8px 0 !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+}
+
+/* Tabelas */
+.md-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 16px 0 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.md-thead {
+  background-color: #f6f8fa !important;
+}
+
+.md-th {
+  padding: 12px !important;
+  text-align: left !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid #0078d4 !important;
+  color: #2c3e50 !important;
+}
+
+.md-td {
+  padding: 12px !important;
+  border-bottom: 1px solid #e1e4e8 !important;
+}
+
+.md-tr:hover {
+  background-color: #f6f8fa !important;
+}
+
+/* Linhas horizontais */
+.md-hr {
+  margin: 24px 0 !important;
+  border: none !important;
+  border-top: 2px solid #e1e4e8 !important;
+}
+
+/* Blockquotes */
+.markdown-renderer blockquote {
+  margin: 16px 0 !important;
+  padding: 0 16px !important;
+  border-left: 4px solid #ddd !important;
+  color: #666 !important;
+  font-style: italic !important;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .markdown-renderer {
+    padding: 16px;
+    font-size: 14px;
+  }
+
+  .md-h1 {
+    font-size: 24px !important;
+  }
+
+  .md-h2 {
+    font-size: 20px !important;
+  }
+
+  .md-h3 {
+    font-size: 18px !important;
+  }
+
+  .md-p,
+  .md-li {
+    font-size: 14px !important;
+  }
+
+  .md-pre {
+    overflow-x: auto !important;
+  }
+}
+

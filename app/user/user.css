@@ -15,15 +15,165 @@
   max-width: 600px;
 }
 
-.user-container h1 {
-  font-size: 2.5em;
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.profile-header h1 {
+  font-size: 2.5em;
+  margin: 0;
   font-weight: 700;
+  flex: 1;
+}
+
+.btn-edit {
+  background-color: var(--orangeAccent);
+  color: var(--colorBG);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.btn-edit:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+/* Mensagens */
+.message-box {
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
   text-align: center;
+  font-weight: 600;
+  animation: slideIn 0.3s ease;
+}
+
+.message-box.success {
+  background-color: rgba(76, 175, 80, 0.2);
+  color: #4CAF50;
+  border: 1px solid #4CAF50;
+}
+
+.message-box.error {
+  background-color: rgba(244, 67, 54, 0.2);
+  color: #F44336;
+  border: 1px solid #F44336;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .user-info {
   margin-bottom: 2rem;
+}
+
+.edit-form {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  font-size: 1em;
+  color: var(--orangeAccent);
+}
+
+.form-group input {
+  padding: 0.75rem;
+  border: 1px solid var(--yellowAccent);
+  border-radius: 8px;
+  background-color: rgba(255, 193, 7, 0.05);
+  color: var(--text);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1em;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--orangeAccent);
+  background-color: rgba(255, 193, 7, 0.1);
+  box-shadow: 0 0 10px rgba(255, 152, 0, 0.3);
+}
+
+.form-group input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn-save,
+.btn-cancel {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95em;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-save {
+  background-color: var(--orangeAccent);
+  color: var(--colorBG);
+}
+
+.btn-save:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+  background-color: transparent;
+  color: var(--orangeAccent);
+  border: 2px solid var(--orangeAccent);
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background-color: var(--orangeAccent);
+  color: var(--colorBG);
+}
+
+.btn-cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .info-group {
@@ -83,4 +233,96 @@
 .btn-logout:hover {
   background-color: var(--orangeAccent);
   color: var(--colorBG);
+}
+
+/* Seção de Arquivos */
+.user-files-section {
+  margin-bottom: 2rem;
+  padding: 2rem 0;
+  border-top: 1px solid var(--yellowAccent);
+}
+
+.user-files-section h2 {
+  font-size: 1.8em;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  color: var(--orangeAccent);
+}
+
+.files-loading,
+.files-empty {
+  text-align: center;
+  color: #999;
+  font-size: 1em;
+  padding: 1rem;
+}
+
+.files-table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+}
+
+.files-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent;
+}
+
+.files-table thead {
+  background-color: rgba(255, 193, 7, 0.1);
+  border-bottom: 2px solid var(--yellowAccent);
+}
+
+.files-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--orangeAccent);
+  border-bottom: 2px solid var(--yellowAccent);
+}
+
+.files-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 193, 7, 0.3);
+  word-break: break-word;
+}
+
+.files-table tbody tr:hover {
+  background-color: rgba(255, 193, 7, 0.05);
+}
+
+@media (max-width: 768px) {
+  .files-table th,
+  .files-table td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.9em;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .profile-header h1 {
+    font-size: 1.8em;
+    text-align: center;
+  }
+
+  .btn-edit {
+    width: 100%;
+    text-align: center;
+  }
+
+  .user-container {
+    padding: 1rem;
+  }
+
+  .form-buttons {
+    flex-direction: column;
+  }
+
+  .btn-save,
+  .btn-cancel {
+    width: 100%;
+  }
 }
