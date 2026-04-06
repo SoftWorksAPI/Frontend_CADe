@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Modal from '@/app/components/Modal/page';
+import MarkdownRenderer from '@/app/components/MarkdownRenderer/MarkdownRenderer';
 import { useModal } from '@/app/hooks/useModal';
 import './files.css';
 
@@ -19,6 +20,7 @@ export default function FilesPage() {
 
   const messageModal = useModal();
   const uploadModal = useModal();
+  const reportModal = useModal();
   const [modalMessage, setModalMessage] = useState('');
 
   const router = useRouter();
@@ -198,10 +200,35 @@ export default function FilesPage() {
         throw new Error(processingData.detail || 'Erro ao processar arquivo');
       }
 
-      // Exibir resultado do processamento
-      const resultMessage = `✅ Arquivo processado com sucesso!\n\n📊 Resultado:\n${JSON.stringify(processingData, null, 2)}`;
+      // Extrair o relatório markdown
+      const markdownContent = processingData.relatorio;
+      
+      if (!markdownContent) {
+        throw new Error('Relatório não foi gerado');
+      }
 
-      setModalMessage(resultMessage);
+      // Salvar o relatório no backend Node.js
+      const updateResponse = await fetch(`${apiUrl}/files/${fileId}/markdown`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          markdownContent: markdownContent,
+        }),
+      });
+
+      const updateData = await updateResponse.json();
+      if (!updateResponse.ok) throw new Error(updateData.message || 'Erro ao salvar relatório');
+
+      // Atualizar o estado local com o novo conteúdo
+      setSelectedFileDetail({
+        ...selectedFileDetail,
+        markdownContent: markdownContent,
+      });
+
+      setModalMessage('✅ Arquivo processado com sucesso! Relatório salvo.');
       messageModal.open();
     } catch (err) {
       setModalMessage(`❌ Erro ao processar: ${err.message}`);
@@ -362,10 +389,14 @@ export default function FilesPage() {
               )}
               {selectedFileDetail.markdownContent && (
                 <div className="detail-group">
-                  <label>Markdown:</label>
-                  <div className="markdown-content">
-                    {selectedFileDetail.markdownContent}
-                  </div>
+                  <label>Relatório:</label>
+                  <button 
+                    className="btn btn-primary"
+                    onClick={reportModal.open}
+                    style={{ width: '100%', marginTop: '8px' }}
+                  >
+                    👁️ Visualizar Relatório
+                  </button>
                 </div>
               )}
             </div>
@@ -479,6 +510,26 @@ export default function FilesPage() {
         ) : (
           <p>{modalMessage}</p>
         )}
+      </Modal>
+
+      {/* Modal de Visualização do Relatório */}
+      <Modal
+        isOpen={reportModal.isOpen}
+        onClose={reportModal.close}
+        title="Relatório de Análise DXF"
+        size="large"
+        footer={
+          <button 
+            className="btn-primary"
+            onClick={reportModal.close}
+          >
+            Fechar
+          </button>
+        }
+      >
+        <div className="report-content" style={{ maxHeight: '600px', overflowY: 'auto' }}>
+          <MarkdownRenderer content={selectedFileDetail?.markdownContent} />
+        </div>
       </Modal>
       </div>
     </main>
